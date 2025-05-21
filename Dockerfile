@@ -1,17 +1,18 @@
-FROM php:8.1-fpm
+FROM node:18-alpine
+WORKDIR /app
 
-RUN apt-get update \
- && apt-get install -y \
-    libsqlite3-dev libzip-dev zip unzip git \
- && docker-php-ext-install pdo_sqlite zip
+# Install dependencies via npm
+COPY package.json package-lock.json ./
+RUN npm install
 
-# Composer’ı kopyala
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
+# Copy source code
 COPY . .
-RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data /var/www/html/logs
+# Build TypeScript
+RUN npm run build
 
-CMD ["php-fpm"]
+# Expose port
+EXPOSE 3000
+
+# Start server
+CMD ["npm", "run", "dev"]

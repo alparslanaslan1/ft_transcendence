@@ -11,16 +11,17 @@ export const db = new Database(process.env.DATABASE_FILE!);
 // SQLite dosyasını aç (yoksa oluştur). process.env.DATABASE_FILE!=non-null assertion, boş gelmez.
 
 // —— Tablo Oluşturma ——
-const init = db.prepare(`
+const initUsers = db.prepare(`
   CREATE TABLE IF NOT EXISTS users (
     id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT    UNIQUE NOT NULL,
-    password TEXT    NOT NULL
+    username  TEXT    UNIQUE NOT NULL,
+    avatar    TEXT DEFAULT NULL,
+    password  TEXT    NOT NULL
   )
 `);
 // users tablosu yoksa, id, username ve password alanlarıyla oluşturacak sorguyu hazırlar.
 
-init.run();
+initUsers.run();
 // Hazırlanan sorguyu çalıştır: tabloyu oluştur veya zaten varsa atla.
 
 const initFriends = db.prepare(`

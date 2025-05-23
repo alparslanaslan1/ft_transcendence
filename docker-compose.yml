@@ -6,6 +6,7 @@ services:
     env_file: .env
     volumes:
       - ./:/app
+      - ./uploads:/app/uploads 
       - /app/node_modules
       - ./data:/app/data
     command: npm run dev

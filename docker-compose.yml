@@ -1,12 +1,42 @@
+
 services:
-  app:
-    build: .
-    ports:
-      - "${FASTIFY_PORT}:3000"
-    env_file: .env
+  user-service:
+    build:
+      context: ./services/user-service
+    env_file:
+      - ./services/user-service/.env
     volumes:
-      - ./:/app
-      - ./uploads:/app/uploads 
-      - /app/node_modules
-      - ./data:/app/data
-    command: npm run dev
+      - db-data:/app/data
+    ports:
+      - "3001:3001"
+
+
+  friend-service:
+    build:
+      context: ./services/friend-service
+    env_file:
+      - ./services/friend-service/.env
+    volumes:
+      - db-data:/app/data
+    ports:
+      - "3002:3002"
+    depends_on:
+      - user-service
+
+  avatar-service:
+    build:
+      context: ./services/avatar-service
+    env_file:
+      - ./services/avatar-service/.env
+    volumes:
+      - db-data:/app/data
+      - avatar-uploads:/app/uploads
+    ports:
+      - "3003:3003"
+    depends_on:
+      - user-service
+
+      - 
+volumes:
+  db-data:
+  avatar-uploads:

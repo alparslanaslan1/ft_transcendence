@@ -1,0 +1,22 @@
+{
+    "name": "user-service",
+    "version": "1.0.0",
+    "main": "dist/index.js",
+    "scripts": {
+      "build": "tsc",
+      "start": "node dist/index.js"
+    },
+    "dependencies": {
+      "@fastify/jwt": "^5.0.0",
+      "better-sqlite3": "^8.0.0",
+      "bcrypt": "^5.1.0",
+      "dotenv": "^16.0.0",
+      "fastify": "^4.0.0"
+    },
+    "devDependencies": {
+      "@types/bcrypt": "^5.0.0",
+      "@types/node": "^18.0.0",
+      "typescript": "^5.0.0"
+    }
+  }
+  

@@ -1,15 +1,20 @@
+// src/services/userService.ts
+
+
 import { db } from '../db';
 import bcrypt from 'bcrypt';
+import { removeAllFriendsForUser } from './friendService';
 
 export interface User {
-  id: number;
-  username: string;
-  password: string;
+  id        : number;
+  username  : string;
+  password  : string;
 }
 
 export interface PublicUser {
-  id: number;
-  username: string;
+  id        : number;
+  username  : string;
+  avatarUrl : string
 }
 
 export async function createUser(
@@ -21,8 +26,12 @@ export async function createUser(
     'INSERT INTO users (username, password) VALUES (?, ?)'
   );
   const info = stmt.run(username, hash);
-  return { id: info.lastInsertRowid as number, username };
+  const id = info.lastInsertRowid as number;
+  // avatar alanı henüz null olduğu için default.png kullanıyoruz
+  const avatarUrl = `${process.env.AVATAR_BASE_URL}/default.png`;
+  return { id, username, avatarUrl };
 }
+
 
 export function findUserByUsername(
   username: string
@@ -33,13 +42,26 @@ export function findUserByUsername(
 }
 
 export function deleteUserById(id: number): boolean {
+  removeAllFriendsForUser(id);
   const stmt = db.prepare('DELETE FROM users WHERE id = ?');
   const info = stmt.run(id);
   return info.changes > 0;
 }
 
 export function listUsers(): PublicUser[] {
-  return db
-    .prepare('SELECT id, username FROM users')
-    .all() as PublicUser[];
+  // avatar sütununu da çek
+  const rows = db
+    .prepare('SELECT id, username, avatar FROM users')
+    .all() as { id: number; username: string; avatar: string | null }[];
+
+  return rows.map(row => {
+    // avatar null ise default.png kullan
+    const fileName = row.avatar ?? 'default.png';
+    const avatarUrl = `${process.env.AVATAR_BASE_URL}/${fileName}`;
+    return {
+      id:       row.id,
+      username: row.username,
+      avatarUrl
+    };
+  });
 }

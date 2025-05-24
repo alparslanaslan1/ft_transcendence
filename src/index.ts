@@ -1,3 +1,4 @@
+// index.ts
 
 import Fastify from 'fastify';
 import { config } from 'dotenv';
@@ -6,6 +7,8 @@ import { userRoutes } from './routes/userRoutes';
 import { friendRoutes } from './routes/friendRoutes';
 import multipartPlugin from './plugins/multiPart';
 import staticPlugin    from './plugins/static';
+import { avatarRoutes } from './routes/avatarRoutes';
+
 
 
 config();
@@ -21,5 +24,8 @@ app.register(friendRoutes);
 
 app.register(multipartPlugin);
 app.register(staticPlugin);
+
+app.register(avatarRoutes);
+
 
 app.listen({ port: Number(process.env.FASTIFY_PORT), host: '0.0.0.0' });

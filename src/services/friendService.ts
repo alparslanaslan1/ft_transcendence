@@ -1,3 +1,6 @@
+// src/services/friendService.ts
+
+
 import { db } from '../db';
 import { PublicUser } from './userService';
 
@@ -30,6 +33,21 @@ export function removeFriend(userId: number, friendId: number): boolean {
   const info = stmt.run(userId, friendId);
   return info.changes > 0;
 }
+
+/**
+ * Belirli bir kullanıcı ile ilişkili tüm arkadaşlık kayıtlarını siler.
+ * @param userId 
+ * @returns silinen satır sayısı
+ */
+export function removeAllFriendsForUser(userId: number): number {
+  const stmt = db.prepare(`
+    DELETE FROM friends
+    WHERE user_id = ? OR friend_id = ?
+  `);
+  const info = stmt.run(userId, userId);
+  return info.changes;
+}
+
 
 /**
  * Kullanıcının arkadaş listesini döner.

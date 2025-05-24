@@ -1,3 +1,5 @@
+// db.ts
+
 import Database from 'better-sqlite3';
 // better-sqlite3 paketiyle senkron SQLite DB bağlantısı kurarız.
 

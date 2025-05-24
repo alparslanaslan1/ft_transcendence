@@ -1,3 +1,6 @@
+// src/routes/friendRoutes.ts
+
+
 import { FastifyInstance } from 'fastify';
 import {
   addFriendHandler,

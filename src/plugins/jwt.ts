@@ -1,3 +1,5 @@
+// src/plugins/jwt.ts
+
 import fp from 'fastify-plugin';
 // Plugin’in doğru sırada yüklenmesi ve encapsulation için kullanılır.
 

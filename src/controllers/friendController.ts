@@ -1,3 +1,5 @@
+// src/controllers/friendController.ts
+
 import { FastifyRequest, FastifyReply } from 'fastify';
 import {
   addFriend,

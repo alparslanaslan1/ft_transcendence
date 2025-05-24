@@ -1,3 +1,6 @@
+// src/routes/userRoutes.ts
+
+
 import { FastifyInstance } from 'fastify';
 import * as userCtrl from '../controllers/userController';
 
